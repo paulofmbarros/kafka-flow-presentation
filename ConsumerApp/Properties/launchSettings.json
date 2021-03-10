@@ -1,0 +1,10 @@
+﻿{
+  "profiles": {
+    "ConsumerApp": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
