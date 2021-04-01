@@ -1,14 +1,12 @@
 namespace ConsumerApp
 {
     using System;
-    using System.Threading;
     using System.Threading.Tasks;
     using Common;
     using KafkaFlow;
     using KafkaFlow.Serializer;
     using KafkaFlow.Serializer.NewtonsoftJson;
     using KafkaFlow.TypedHandler;
-    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
 
     public class Program
@@ -21,8 +19,7 @@ namespace ConsumerApp
                     (hostContext, services) =>
                     {
                         services
-                            .AddHostedService<KafkaFlowHostedService>()
-                            .AddKafka(
+                            .AddKafkaFlowHostedService(
                                 kafka => kafka
                                     .UseConsoleLog()
                                     .AddCluster(
@@ -50,28 +47,6 @@ namespace ConsumerApp
                 .Run();
         }
     }
-
-
-    public class KafkaFlowHostedService : IHostedService
-    {
-        private readonly IKafkaBus kafkaBus;
-
-        public KafkaFlowHostedService(IServiceProvider serviceProvider)
-        {
-            this.kafkaBus = serviceProvider.CreateKafkaBus();
-        }
-
-        public Task StartAsync(CancellationToken cancellationToken)
-        {
-            return this.kafkaBus.StartAsync(cancellationToken);
-        }
-
-        public Task StopAsync(CancellationToken cancellationToken)
-        {
-            return this.kafkaBus.StopAsync();
-        }
-    }
-
 
     public class SampleMessageHandler : IMessageHandler<SampleMessage>
     {
