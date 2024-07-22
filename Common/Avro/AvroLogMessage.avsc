@@ -1,0 +1,12 @@
+﻿{
+  "type": "record",
+  "name": "AvroLogMessage",
+  "namespace": "SchemaRegistry",
+  "doc": "A simple log message.",
+  "fields": [
+    {
+      "name": "Message",
+      "type": "string"
+    }
+  ]
+}

@@ -15,7 +15,7 @@ class Program
     {
         var services = new ServiceCollection();
 
-        const string producerName = "sample-producer";
+        const string producerName = "batch-producer";
         const string batchTestTopic = "batch-test-topic";
 
         services.AddKafka(

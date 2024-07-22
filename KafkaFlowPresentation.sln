@@ -1,9 +1,5 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProducerApp", "ProducerApp\ProducerApp.csproj", "{F51B268C-6892-4888-B723-FACF5E4490E9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsumerApp", "ConsumerApp\ConsumerApp.csproj", "{7E9CE99A-7126-4BDC-B0A6-7495D73B636D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{1B6C7108-550A-4391-9CA9-1D7D8ACC39E5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A973ACBE-6326-46B8-BDB1-8593980CD9FD}"
@@ -11,7 +7,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		docker-compose.yml = docker-compose.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BatchProducer", "BatchProducer\BatchProducer.csproj", "{39D6CFD9-60FA-4B61-A118-1C83C97700C1}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Simple", "Simple", "{E2B2B403-F584-41D0-AEFE-81ABDD9C1BD3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{CEAE7135-EEAF-4F87-8CB1-5D158E1A50BA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Batch", "Batch", "{C9135C1B-F822-4833-B3A5-A096120DDBEB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleConsumerApp", "SimpleConsumerApp\SimpleConsumerApp.csproj", "{43213852-16DC-48A3-B6A1-92B27FDDF48B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleProducerApp", "SimpleProducerApp\SimpleProducerApp.csproj", "{A3A56901-11C0-425A-8AFA-CC1AE0196BDF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,21 +23,22 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F51B268C-6892-4888-B723-FACF5E4490E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F51B268C-6892-4888-B723-FACF5E4490E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F51B268C-6892-4888-B723-FACF5E4490E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F51B268C-6892-4888-B723-FACF5E4490E9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7E9CE99A-7126-4BDC-B0A6-7495D73B636D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7E9CE99A-7126-4BDC-B0A6-7495D73B636D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7E9CE99A-7126-4BDC-B0A6-7495D73B636D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7E9CE99A-7126-4BDC-B0A6-7495D73B636D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1B6C7108-550A-4391-9CA9-1D7D8ACC39E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1B6C7108-550A-4391-9CA9-1D7D8ACC39E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B6C7108-550A-4391-9CA9-1D7D8ACC39E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B6C7108-550A-4391-9CA9-1D7D8ACC39E5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{39D6CFD9-60FA-4B61-A118-1C83C97700C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{39D6CFD9-60FA-4B61-A118-1C83C97700C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{39D6CFD9-60FA-4B61-A118-1C83C97700C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{39D6CFD9-60FA-4B61-A118-1C83C97700C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43213852-16DC-48A3-B6A1-92B27FDDF48B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43213852-16DC-48A3-B6A1-92B27FDDF48B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43213852-16DC-48A3-B6A1-92B27FDDF48B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43213852-16DC-48A3-B6A1-92B27FDDF48B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3A56901-11C0-425A-8AFA-CC1AE0196BDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3A56901-11C0-425A-8AFA-CC1AE0196BDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3A56901-11C0-425A-8AFA-CC1AE0196BDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3A56901-11C0-425A-8AFA-CC1AE0196BDF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1B6C7108-550A-4391-9CA9-1D7D8ACC39E5} = {CEAE7135-EEAF-4F87-8CB1-5D158E1A50BA}
+		{43213852-16DC-48A3-B6A1-92B27FDDF48B} = {E2B2B403-F584-41D0-AEFE-81ABDD9C1BD3}
+		{A3A56901-11C0-425A-8AFA-CC1AE0196BDF} = {E2B2B403-F584-41D0-AEFE-81ABDD9C1BD3}
 	EndGlobalSection
 EndGlobal

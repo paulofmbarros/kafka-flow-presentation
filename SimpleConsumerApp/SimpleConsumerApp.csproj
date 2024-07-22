@@ -1,10 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk.Worker">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
-        <UserSecretsId>dotnet-ConsumerApp-1908763A-6752-4D7B-97F3-E228587EE514</UserSecretsId>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
+
 
     <ItemGroup>
         <PackageReference Include="KafkaFlow" Version="3.0.9" />
@@ -12,18 +15,22 @@
         <PackageReference Include="KafkaFlow.LogHandler.Console" Version="3.0.9" />
         <PackageReference Include="KafkaFlow.Microsoft.DependencyInjection" Version="3.0.9" />
         <PackageReference Include="KafkaFlow.Serializer" Version="2.5.1" />
-        <PackageReference Include="KafkaFlow.Serializer.NewtonsoftJson" Version="3.0.9" />
+        <PackageReference Include="KafkaFlow.Serializer.SchemaRegistry.ConfluentAvro" Version="3.0.9" />
         <PackageReference Include="KafkaFlow.TypedHandler" Version="2.5.1" />
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+        <PackageReference Include="KafkaFlow.SchemaRegistry" Version="3.0.9" />
+
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Common\Common.csproj" />
+        <ProjectReference Include="..\Common\Common.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
+        <Content Include="..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
     </ItemGroup>
+    
+
 </Project>
