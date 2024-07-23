@@ -26,7 +26,9 @@ class Program
 
         // const string producerName = "sample-producer";
         const string avroTopic = "avro-topic";
-        const string avroProducerName = "avro-producer";
+        // const string avroProducerName = "avro-producer";
+        const string avroProducerName = "kafka-flow-retry-durable-mongodb-avro-producer";
+        const string mongodbRetryTopic = "sample-kafka-flow-retry-durable-mongodb-avro-topic";
 
 
         services.AddKafka(
@@ -37,29 +39,34 @@ class Program
                     cluster => cluster
                         .WithBrokers(new[] { "localhost:9092" })
                         .WithSchemaRegistry(config => config.Url = "localhost:8081")
+                        .CreateTopicIfNotExists(mongodbRetryTopic, 1, 1)
                         .CreateTopicIfNotExists(avroTopic, 1, 1)
+                        // .AddProducer(
+                        //     avroProducerName,
+                        //     producer => producer
+                        //         .AddMiddlewares(
+                        //             middlewares => middlewares
+                        //                 .AddSchemaRegistryAvroSerializer(
+                        //                     new AvroSerializerConfig
+                        //                     {
+                        //                         SubjectNameStrategy = SubjectNameStrategy.Topic
+                        //                     }))
+                        // )
                         .AddProducer(
-                            avroProducerName,
+                            avroProducerName
+                            ,
                             producer => producer
+                                .DefaultTopic(mongodbRetryTopic)
                                 .AddMiddlewares(
                                     middlewares => middlewares
                                         .AddSchemaRegistryAvroSerializer(
                                             new AvroSerializerConfig
                                             {
-                                                SubjectNameStrategy = SubjectNameStrategy.Topic
-                                            }))
-                        )
+                                                SubjectNameStrategy = SubjectNameStrategy.TopicRecord
+                                            })
+                                )
+                                .WithAcks(Acks.All))
 
-
-                        // .AddProducer(
-                        //     producerName,
-                        //     producer => producer
-                        //         .DefaultTopic("presentation-topic")
-                        //         .AddMiddlewares(
-                        //             middlewares => middlewares
-                        //                 .AddSerializer<NewtonsoftJsonMessageSerializer>()
-                        //         )
-                        // )
                 )
         );
 
@@ -85,9 +92,9 @@ class Program
             {
                 try
                 {
-                    await producer.ProduceAsync(avroTopic,Guid.NewGuid().ToString(), new AvroLogMessage
+                    await producer.ProduceAsync(mongodbRetryTopic,Guid.NewGuid().ToString(), new AvroLogMessage
                     {
-                        Message = "Simple Message"
+                        Severity = LogLevel.Info
                     });
                 }
                 catch (Exception ex)

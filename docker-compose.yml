@@ -112,6 +112,17 @@
       CONFLUENT_METRICS_TOPIC_REPLICATION: 1
       PORT: 9021
 
+  mongodb:
+    image: mongo:4.4
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    networks:
+      - custom_network
+#    environment:
+#      MONGO_INITDB_ROOT_USERNAME: root
+#      MONGO_INITDB_ROOT_PASSWORD: root
+
 networks:
   custom_network:
     driver: bridge

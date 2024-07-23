@@ -19,9 +19,8 @@ namespace SchemaRegistry
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Openvia.AvroSchemaGenerator", "1.11.1")]
 	public partial class AvroLogMessage : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"AvroLogMessage\",\"doc\":\"Asimplelogmessage.\",\"namespace\":\"" +
-				"SchemaRegistry\",\"fields\":[{\"name\":\"Message\",\"type\":\"string\"}]}");
-		private string _Message;
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""AvroLogMessage"",""doc"":""Asimplelogmessage."",""namespace"":""SchemaRegistry"",""fields"":[{""name"":""Severity"",""type"":{""type"":""enum"",""name"":""LogLevel"",""doc"":""Enumeratesthesetofallowableloglevels."",""namespace"":""SchemaRegistry"",""symbols"":[""None"",""Verbose"",""Info"",""Warning"",""Error""]}}]}");
+		private SchemaRegistry.LogLevel _Severity;
 		public virtual global::Avro.Schema Schema
 		{
 			get
@@ -29,22 +28,22 @@ namespace SchemaRegistry
 				return AvroLogMessage._SCHEMA;
 			}
 		}
-		public string Message
+		public SchemaRegistry.LogLevel Severity
 		{
 			get
 			{
-				return this._Message;
+				return this._Severity;
 			}
 			set
 			{
-				this._Message = value;
+				this._Severity = value;
 			}
 		}
 		public virtual object Get(int fieldPos)
 		{
 			switch (fieldPos)
 			{
-			case 0: return this.Message;
+			case 0: return this.Severity;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Get()");
 			};
 		}
@@ -52,7 +51,7 @@ namespace SchemaRegistry
 		{
 			switch (fieldPos)
 			{
-			case 0: this.Message = (System.String)fieldValue; break;
+			case 0: this.Severity = (SchemaRegistry.LogLevel)fieldValue; break;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Put()");
 			};
 		}

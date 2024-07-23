@@ -11,6 +11,7 @@
         <PackageReference Include="KafkaFlow" Version="3.0.9" />
         <PackageReference Include="KafkaFlow.Admin.WebApi" Version="3.0.9" />
         <PackageReference Include="KafkaFlow.Microsoft.DependencyInjection" Version="3.0.9" />
+        <PackageReference Include="KafkaFlow.Retry" Version="3.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.4"/>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
     </ItemGroup>

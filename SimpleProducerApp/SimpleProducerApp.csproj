@@ -30,5 +30,14 @@
     </ItemGroup>
 
 
+<!--    <PropertyGroup>-->
+<!--        <AvrosInputPath>$(SolutionDir)Common\Avro</AvrosInputPath>-->
+<!--        <ContractsOutputPath>$(SolutionDir)Common\Avro</ContractsOutputPath>-->
+<!--    </PropertyGroup>-->
+
+<!--    <Target Name="GenerateAvroSchemas" BeforeTargets="BeforeBuild">-->
+<!--        <Exec Command="avrogenop generate %22$(AvrosInputPath)%22 %22$(ContractsOutputPath)%22" />-->
+<!--    </Target> -->
+
 
 </Project>
