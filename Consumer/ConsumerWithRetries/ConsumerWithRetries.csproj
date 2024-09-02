@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="KafkaFlow" Version="3.0.9" />
+      <PackageReference Include="KafkaFlow.Extensions.Hosting" Version="3.0.9" />
+      <PackageReference Include="KafkaFlow.LogHandler.Console" Version="3.0.9" />
+      <PackageReference Include="KafkaFlow.Retry" Version="3.0.1" />
+      <PackageReference Include="KafkaFlow.Retry.MongoDb" Version="3.0.1" />
+      <PackageReference Include="KafkaFlow.SchemaRegistry" Version="3.0.9" />
+      <PackageReference Include="KafkaFlow.Serializer" Version="2.5.1" />
+      <PackageReference Include="KafkaFlow.Serializer.ApacheAvro" Version="1.5.8" />
+      <PackageReference Include="KafkaFlow.Serializer.NewtonsoftJson" Version="3.0.9" />
+      <PackageReference Include="KafkaFlow.Serializer.SchemaRegistry.ConfluentAvro" Version="3.0.9" />
+      <PackageReference Include="KafkaFlow.Serializer.SchemaRegistry.ConfluentJson" Version="3.0.9" />
+      <PackageReference Include="KafkaFlow.TypedHandler" Version="2.5.1" />
+      <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Common\Common.csproj" />
+    </ItemGroup>
+
+</Project>
