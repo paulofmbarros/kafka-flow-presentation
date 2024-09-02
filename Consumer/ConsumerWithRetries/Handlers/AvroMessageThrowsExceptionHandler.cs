@@ -1,8 +1,8 @@
-﻿using KafkaFlow;
+﻿using ConsumerWithRetries.Exceptions;
+using KafkaFlow;
 using SchemaRegistry;
-using SimpleConsumerApp.Exceptions;
 
-namespace SimpleConsumerApp.Handlers;
+namespace ConsumerWithRetries.Handlers;
 
 public class AvroMessageThrowsExceptionHandler : IMessageHandler<AvroLogMessage>
 {

@@ -1,7 +1,7 @@
 ﻿using KafkaFlow;
 using SchemaRegistry;
 
-namespace SimpleConsumerApp.Handlers;
+namespace Admin.Handlers;
 
 public class AvroMessageHandler : IMessageHandler<AvroLogMessage>
 {

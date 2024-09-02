@@ -1,4 +1,4 @@
-﻿namespace SimpleConsumerApp.Exceptions;
+﻿namespace ConsumerWithRetries.Exceptions;
 
 public class RetryDurableTestException : Exception
 {

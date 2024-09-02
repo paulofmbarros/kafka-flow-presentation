@@ -3,7 +3,7 @@
 #    image: consumerapp
 #    build:
 #      context: .
-#      dockerfile: ConsumerApp/Dockerfile
+#      dockerfile: Consumer/ConsumerWithOTEL/Dockerfile
 #    networks:
 #        - custom_network
 #
@@ -119,9 +119,21 @@
       - "27017:27017"
     networks:
       - custom_network
-#    environment:
-#      MONGO_INITDB_ROOT_USERNAME: root
-#      MONGO_INITDB_ROOT_PASSWORD: root
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+
+  lgtm:
+    image: grafana/otel-lgtm
+    hostname: lgtm
+    container_name: lgtm
+    ports:
+      - "3000:3000" # ui
+      - "4317:4317" # otlp gRPC
+      - "4318:4318" # otlp HTTP
+
+    networks:
+      - custom_network
 
 networks:
   custom_network:
