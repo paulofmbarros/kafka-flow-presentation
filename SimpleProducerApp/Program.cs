@@ -5,127 +5,143 @@ using KafkaFlow.Configuration;
 using KafkaFlow.OpenTelemetry;
 using KafkaFlow.Producers;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using OpenTelemetry;
 using OpenTelemetry.Exporter;
+using OpenTelemetry.Logs;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using SchemaRegistry;
+using LogLevel = SchemaRegistry.LogLevel;
 
 namespace SimpleProducerApp;
+
 
 class Program
 {
     static async Task Main(string[] args)
     {
-        var services = new ServiceCollection();
-        const string avroTopic = "avro-topic";
-        const string avroProducerName = "kafka-flow-producer";
-
-
-
-        // Setting up OpenTelemetry TracerProvider in the Producer
-        using var tracerProvider = Sdk.CreateTracerProviderBuilder()
-            .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(
-                serviceName: "ProducerApp", // Name of the producer service
-                serviceVersion: "1.0.0"))
-            .AddSource(KafkaFlowInstrumentation.ActivitySourceName)
-            .AddConsoleExporter()
-            .AddAspNetCoreInstrumentation()
-            // .AddJaegerExporter(options =>
-            //     {
-            //         options.AgentHost = "localhost"; // Jaeger's agent
-            //         options.AgentPort = 6831;
-            //         options.ExportProcessorType = ExportProcessorType.Simple;
-            //     }
-            //
-            // ) // Jaeger's OTLP receiver
-            //.AddOtlpExporter()
-            .AddOtlpExporter(options =>
+        // Set up and run the Host
+        await Host.CreateDefaultBuilder(args)
+            .ConfigureLogging(logging => logging.AddOpenTelemetry(o =>
             {
-                options.Endpoint = new Uri("http://localhost:4317"); // Jaeger's OTLP receiver
-                options.Protocol = OtlpExportProtocol.Grpc;
-            })
-            // .AddOtlpExporter(options =>
-            // {
-            //     options.Endpoint = new Uri("http://localhost:14250"); // Jaeger's OTLP receiver
-            // })
-            .Build();
+                var resourceBuilder = ResourceBuilder.CreateDefault();
+                resourceBuilder.AddService(
+                    serviceName: "ProducerApp", // Name of the consumer service
+                    serviceVersion: "1.0.0");
+                o.SetResourceBuilder(resourceBuilder);
+                o.IncludeScopes = true;
+                o.IncludeFormattedMessage = true;
+                o.ParseStateValues = true;
 
-        
-        services.AddKafka(
-            kafka => kafka
-                .UseConsoleLog()
-                .AddOpenTelemetryInstrumentation(options =>
-                {
-                    options.EnrichProducer = (activity, messageContext) =>
+                o.AddOtlpExporter(options =>
                     {
-                        activity.SetTag("messaging.destination.producername", "KafkaFlowOtel");
-                    };
-                })
-                .AddCluster(
-                    cluster => cluster
-                        .WithBrokers(new[] { "localhost:9092" })
-                        .WithSchemaRegistry(config => config.Url = "localhost:8081")
-                        .CreateTopicIfNotExists(avroTopic, 1, 1)
-
-                        .AddProducer(
-                            avroProducerName,
-                            producer => producer
-                                .DefaultTopic(avroTopic)
-                                .AddMiddlewares(
-                                    middlewares => middlewares
-                                        .AddSchemaRegistryAvroSerializer(
-                                            new AvroSerializerConfig
-                                            {
-                                                SubjectNameStrategy = SubjectNameStrategy.TopicRecord
-                                            })
-                                )
-                                .WithAcks(Acks.All))
-
-                )
-        );
-
-        var provider = services.BuildServiceProvider();
-
-        var bus = provider.CreateKafkaBus();
-        await bus.StartAsync();
-        var producers = provider.GetRequiredService<IProducerAccessor>();
-        var producer = producers[avroProducerName];
-
-        while (true)
-        {
-            Console.WriteLine("Message count: ");
-            var input = Console.ReadLine();
-
-            if (input == "exit")
-                return;
-
-            if (!int.TryParse(input, out var count))
-                continue;
-
-
-            // //batchProducer
-            // await BatchProduce(producer, count, avroTopic);
-
-            for (var i = 0; i < count; i++)
+                        options.Endpoint = new Uri("http://localhost:4317");
+                        options.Protocol = OtlpExportProtocol.Grpc;
+                    }
+                );
+            }))
+            .ConfigureServices(async (hostContext, services) =>
             {
-                try
-                {
-                    await SimpleProduce(producer, avroTopic);
+                const string avroTopic = "avro-topic";
+                const string avroProducerName = "kafka-flow-producer";
 
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
-        }
+                services.AddLogging();
+                // Configure OpenTelemetry Tracing
+                services.AddOpenTelemetry().ConfigureResource(options => options.AddService(
+                        serviceName: "ProducerApp", // Name of the consumer service
+                        serviceVersion: "1.0.0"
+                    ))
+                    .WithTracing(builder =>
+                    {
+                        builder
+                            .AddSource(KafkaFlowInstrumentation.ActivitySourceName) // Add KafkaFlow instrumentation
+                            .AddConsoleExporter() // Optional: Add Console exporter for debugging
+                            .AddAspNetCoreInstrumentation()
+                            .AddOtlpExporter(options =>
+                            {
+                                options.Endpoint = new Uri("http://localhost:4317"); // Endpoint of OTLP receiver
+                                options.Protocol = OtlpExportProtocol.Grpc;
+                                options.BatchExportProcessorOptions = new()
+                                {
+                                    MaxQueueSize = 1000,
+                                    ScheduledDelayMilliseconds = 1000,
+                                    MaxExportBatchSize = 100
+                                };
+                            });
+                    });
 
+                // Configure Kafka Producer
+                services.AddKafka(
+                    kafka => kafka
+                        .UseConsoleLog()
+                        .AddOpenTelemetryInstrumentation(options =>
+                        {
+                            options.EnrichProducer = (activity, messageContext) =>
+                            {
+                                activity.SetTag("messaging.destination.producername", "KafkaFlowOtel");
+                            };
+                        })
+                        .AddCluster(
+                            cluster => cluster
+                                .WithBrokers(new[] { "localhost:9092" })
+                                .WithSchemaRegistry(config => config.Url = "http://localhost:8081")
+                                .CreateTopicIfNotExists(avroTopic, 1, 1)
+                                .AddProducer(
+                                    avroProducerName,
+                                    producer => producer
+                                        .DefaultTopic(avroTopic)
+                                        .AddMiddlewares(
+                                            middlewares => middlewares
+                                                .AddSchemaRegistryAvroSerializer(
+                                                    new AvroSerializerConfig
+                                                    {
+                                                        SubjectNameStrategy = SubjectNameStrategy.TopicRecord
+                                                    })
+                                        )
+                                        .WithAcks(Acks.All))
+                        )
+                );
+
+                var provider = services.BuildServiceProvider();
+
+                var bus = provider.CreateKafkaBus();
+                await bus.StartAsync();
+                var producers = provider.GetRequiredService<IProducerAccessor>();
+                var producer = producers[avroProducerName];
+
+                while (true)
+                {
+                    Console.WriteLine("Message count: ");
+                    var input = Console.ReadLine();
+
+                    if (input == "exit")
+                        return;
+
+                    if (!int.TryParse(input, out var count))
+                        continue;
+
+                    for (var i = 0; i < count; i++)
+                    {
+                        try
+                        {
+                            await SimpleProduce(producer, i%2 == 0 ? "par" : "impar" ,avroTopic);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                        }
+                    }
+                }
+            })
+            .Build()
+            .RunAsync();
     }
 
-    private static async Task SimpleProduce(IMessageProducer producer, string avroTopic)
+    private static async Task SimpleProduce(IMessageProducer producer,string key, string avroTopic)
     {
-        await producer.ProduceAsync(avroTopic,Guid.NewGuid().ToString(), new AvroLogMessage
+        await producer.ProduceAsync(avroTopic, key, new AvroLogMessage
         {
             Severity = LogLevel.Info
         });

@@ -24,25 +24,7 @@ public class Program
 
         const string producerName = "PrintConsole";
         const string topicName =  "avro-topic";
-
-
-        // using var tracerProvider = Sdk.CreateTracerProviderBuilder()
-        //     .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(
-        //         serviceName: "ConsumerApp", // Name of the consumer service
-        //         serviceVersion: "1.0.0"))
-        //     .AddSource(KafkaFlowInstrumentation.ActivitySourceName)
-        //     .AddConsoleExporter()
-        //     .AddAspNetCoreInstrumentation()
-        //     // .AddJaegerExporter(options => options.Endpoint = new Uri("http://localhost:14250")) // Jaeger's OTLP receiver
-        //     // .AddOtlpExporter()
-        //     .AddOtlpExporter(options =>
-        //     {
-        //         options.Endpoint = new Uri("http://localhost:4317"); // Jaeger's OTLP receiver
-        //         options.Protocol = OtlpExportProtocol.Grpc;
-        //     })
-        //     .Build();
-
-
+        
       await Host
             .CreateDefaultBuilder(args)
             .ConfigureLogging(logging=> logging.AddOpenTelemetry(o =>

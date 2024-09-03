@@ -32,15 +32,16 @@ public class Program
                                                 .Topic(avroTopic)
                                                 .WithGroupId("avro-group-id")
                                                 .WithBufferSize(100)
-                                                .WithWorkersCount(1)
+                                                .WithWorkersCount(3)
                                                 .WithAutoOffsetReset(AutoOffsetReset.Latest)
                                                 .AddMiddlewares(
                                                     middlewares => middlewares
                                                         //Avro Schema deserializer
                                                         .AddSchemaRegistryAvroDeserializer()
-                                                        //Batching
-                                                        .AddBatching(10, TimeSpan.FromSeconds(10))
-                                                        .Add<PrintConsoleMiddleware>()
+                                                        // ------------- Batching ----------------
+                                                        //.AddBatching(10, TimeSpan.FromSeconds(10))
+                                                        //.Add<PrintConsoleMiddleware>()
+                                                        // ------------- End Batching ----------------
                                                         //Custom Middleware
                                                         .Add<PauseConsumerOnExceptionMiddleware>()
                                                         ////Policy for retrying
