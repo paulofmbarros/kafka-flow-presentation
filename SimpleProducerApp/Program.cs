@@ -126,7 +126,7 @@ class Program
                     {
                         try
                         {
-                            await SimpleProduce(producer, i%2 == 0 ? "par" : "impar" ,avroTopic);
+                            await SimpleProduce(producer, avroTopic);
                         }
                         catch (Exception ex)
                         {
@@ -139,9 +139,9 @@ class Program
             .RunAsync();
     }
 
-    private static async Task SimpleProduce(IMessageProducer producer,string key, string avroTopic)
+    private static async Task SimpleProduce(IMessageProducer producer, string avroTopic)
     {
-        await producer.ProduceAsync(avroTopic, key, new AvroLogMessage
+        await producer.ProduceAsync(avroTopic, Guid.NewGuid().ToString(), new AvroLogMessage
         {
             Severity = LogLevel.Info
         });
