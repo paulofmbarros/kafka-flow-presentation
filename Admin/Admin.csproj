@@ -8,19 +8,19 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="KafkaFlow" Version="3.0.9" />
-        <PackageReference Include="KafkaFlow.Admin" Version="3.0.9" />
-        <PackageReference Include="KafkaFlow.Admin.Dashboard" Version="3.0.9" />
-        <PackageReference Include="KafkaFlow.Admin.WebApi" Version="3.0.9" />
-        <PackageReference Include="KafkaFlow.Extensions.Hosting" Version="3.0.9" />
-        <PackageReference Include="KafkaFlow.LogHandler.Console" Version="3.0.9" />
-        <PackageReference Include="KafkaFlow.Microsoft.DependencyInjection" Version="3.0.9" />
+        <PackageReference Include="KafkaFlow" Version="3.0.10" />
+        <PackageReference Include="KafkaFlow.Admin" Version="3.0.10" />
+        <PackageReference Include="KafkaFlow.Admin.Dashboard" Version="3.0.10" />
+        <PackageReference Include="KafkaFlow.Admin.WebApi" Version="3.0.10" />
+        <PackageReference Include="KafkaFlow.Extensions.Hosting" Version="3.0.10" />
+        <PackageReference Include="KafkaFlow.LogHandler.Console" Version="3.0.10" />
+        <PackageReference Include="KafkaFlow.Microsoft.DependencyInjection" Version="3.0.10" />
         <PackageReference Include="KafkaFlow.Retry" Version="3.0.1" />
         <PackageReference Include="KafkaFlow.Retry.MongoDb" Version="3.0.1" />
-        <PackageReference Include="KafkaFlow.SchemaRegistry" Version="3.0.9" />
+        <PackageReference Include="KafkaFlow.SchemaRegistry" Version="3.0.10" />
         <PackageReference Include="KafkaFlow.TypedHandler" Version="2.5.1" />
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.4"/>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.8" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.3" />
     </ItemGroup>
 
     <ItemGroup>
